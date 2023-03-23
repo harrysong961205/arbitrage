@@ -1,0 +1,39 @@
+{
+    "logger":{
+        "db": "mysql",
+        "db_user":"root",
+        "db_password":"password",
+        "db_name":"arbitrage",
+        "db_table_name":"tsx"
+    },
+    "kafka":{
+        "addr":"127.0.0.1",
+        "port":"9092"
+    },
+    "apis":{
+        "binance_api":{
+            "api_key":"api_key",
+            "api_secret":"api_secret"
+            },
+        "dydx_api":{
+            "api_key":"api_key",
+            "api_secret":"api_secret"
+            },
+        "bybit_api":{
+            "api_key":"api_key",
+            "api_secret":"api_secret"
+            },
+        "coinone_api":{
+            "api_key":"api_key",
+            "api_secret":"api_secret"
+            } ,
+        "bitthumb_api":{
+            "api_key":"api_key",
+            "api_secret":"api_secret"
+            },
+        "upbit_api":{
+            "api_key":"api_key",
+            "api_secret":"api_secret"
+            } 
+    }
+}
