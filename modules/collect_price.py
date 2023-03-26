@@ -1,33 +1,43 @@
 import time
 import json
-from binance.client import Client
+import requests
+import binance
+#from binance.client import Client
+import bybit
+from config import config
+# 각 거래소 가격 가져오는 class
+class prices:
+    def __init__(self) -> None:
+        conf = config()
+        self.dydx_api_key = conf.conf["apis"]["dydx_api"]["api_key"]
+        self.dydx_secret_key = conf.conf["apis"]["dydx_api"]["secret_key"]
+        self.bybit_api_key = conf.conf["apis"]["bybit_api"]["api_key"]
+        self.bybit_secret_key = conf.conf["apis"]["bybit_api"]["secret_key"]
 
-#바이낸스
-b_api_key = 'your_api_key'
-b_api_secret = 'your_api_secret'
+    def dydx(self):
+        #dydx 거래소 가격 및 호가창 가져오기
+        response = requests.get('https://api.dydx.exchange/v1/ticker', params={
+            'market': 'SOL-USD',
+        }, headers={
+            'Authorization': self.dydx_api_key,
+            'DYDX-SIGNATURE': self.dydx_secret_key,
+        })
 
-b_client = Client(b_api_key, b_api_secret)
+        if response.status_code == 200:
+            data = json.loads(response.text)
+            print('SOL current price:', data['price'])
+        else:
+            print('Error:', response.status_code)
+        ticker = b_client.get_ticker(symbol='SOLUSDT')
 
- 
+        return ticker['lastPrice']
 
+    def bybit():
+        #bybit 거래소 가격 및 호가창 가져오기
+        client = bybit.bybit(test=False, api_key="", api_secret="")
+        symbol = "SOLUSD"
+        subscribe_orderbook = {"op": "subscribe", "args": [f"{symbol}.OrderBook_200"]}
+        subscribe_trade = {"op": "subscribe", "args": [f"{symbol}.Trade"]}
 
-dydx_api_key = 'your_api_key'
-dydx_secret_key = 'your_secret_key'
-
-while True:
-    response = requests.get('https://api.dydx.exchange/v1/ticker', params={
-        'market': 'SOL-USD',
-    }, headers={
-        'Authorization': dydx_api_key,
-        'DYDX-SIGNATURE': dydx_secret_key,
-    })
-
-    if response.status_code == 200:
-        data = json.loads(response.text)
-        print('SOL current price:', data['price'])
-    else:
-        print('Error:', response.status_code)
-    ticker = b_client.get_ticker(symbol='SOLUSDT')
-    print('SOL current price: ', ticker['lastPrice'])
-    time.sleep(5) 
-
+price = prices()
+print(price.dydx_api_key)
